@@ -60,7 +60,7 @@ All features emphasize user privacy—data stays local or self-hosted. No extern
 - Node.js 18+, Docker Desktop, Git.
 
 ### Installation
-1. Clone: `git clone https://github.com/yourusername/harmonify.git && cd harmonify`
+1. Clone: `git clone https://github.com/Collins-Omariba/harmonify.git && cd harmonify`
 2. Copy `.env.example` to `.env`.
 3. Run: `docker-compose up --build`
    - Frontend: http://localhost:3000
@@ -70,7 +70,7 @@ Migrate DB: `docker-compose exec backend npx prisma migrate dev --name init`
 
 ## Contributing
 We welcome contributions! Whether it's bug fixes, new modules, or UI improvements:
-- Check [issues](https://github.com/HarmonifyOrg/harmonify/issues) for tasks.
+- Check [issues](https://github.com/Collins-Omariba/harmonify/issues) for tasks.
 - Fork, create a branch, and submit a PR.
 - Follow our [code of conduct](CODE_OF_CONDUCT.md).
 - Focus on modularity—each feature as a Django app.
@@ -85,6 +85,5 @@ GPLv3 License.
 - Phase 2: Health/lifestyle modules.
 - Phase 3: AI enhancements and mobile apps.
 
-Join the discussion on [GitHub Discussions](https://github.com/HarmonifyOrg/harmonify/discussions) or reach out!
 
 Built with ❤️ by the contributors.
