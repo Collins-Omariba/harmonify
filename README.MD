@@ -57,7 +57,7 @@ All features emphasize user privacy—data stays local or self-hosted. No extern
 ## Getting Started
 
 ### Prerequisites
-- Node.js 18+, Docker Desktop, Git.
+- Node.js 22+, Docker Desktop, Git.
 
 ### Installation
 1. Clone: `git clone https://github.com/Collins-Omariba/harmonify.git && cd harmonify`
