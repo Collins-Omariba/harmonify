@@ -1,14 +1,668 @@
-generator client {
-  provider = "prisma-client-js"
-}
+
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+generator client {
+  provider = "prisma-client-js"
+}
+
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  categories           Category[]
+  budgets              Budget[]
+  tasks                Task[]
+  savingsGoals         SavingsGoal[]
+  accounts             Account[]
+  transactions         Transaction[]
+  investments          Investment[]
+  debts                Debt[]
+  subscriptions        Subscription[]
+  goals                Goal[]
+  reminders            Reminder[]
+  journalEntries       JournalEntry[]        // Future
+  habits               Habit[]               // Future
+  learningProgresses   LearningProgress[]    // Future
+  visionBoards         VisionBoard[]         // Future
+  mindMaps             MindMap[]             // Future
+  exerciseLogs         ExerciseLog[]         // Future
+  nutritionLogs        NutritionLog[]        // Future
+  sleepLogs            SleepLog[]            // Future
+  waterIntakeLogs      WaterIntakeLog[]      // Future
+  meditationLogs       MeditationLog[]       // Future
+  symptomLogs          SymptomLog[]          // Future
+  events               Event[]               // Future
+  calendars            Calendar[]            // Future
+  contacts             Contact[]             // Future
+  chores               Chore[]               // Future
+  shoppingLists        ShoppingList[]        // Future
+  inventoryItems       InventoryItem[]       // Future
+  travelPlans          TravelPlan[]          // Future
+  petCareLogs          PetCareLog[]          // Future
+  pets                 Pet[]                 // Future
+  smartHomeIntegrations SmartHomeIntegration[] // Future
+  careerTrackers       CareerTracker[]       // Future
+  networkReminders     NetworkReminder[]     // Future
+  creativeNotes        CreativeNote[]        // Future
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  type      String?  // income, expense, budget
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user         User          @relation(fields: [userId], references: [id])
+  budgets      Budget[]
+  transactions Transaction[]
+  subscriptions Subscription[]
+}
+
+model Budget {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  categoryId Int
+  amount    Float
+  period    String   // monthly, yearly
+  startDate DateTime
+  endDate   DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id])
+  category  Category @relation(fields: [categoryId], references: [id])
+  reminders Reminder[]
+}
+
+model Task {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  title        String
+  description  String?
+  priority     Int      // 1-5
+  dueDate      DateTime?
+  status       String   // todo, in-progress, done
+  reminderTime DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id])
+  goal      Goal?    @relation(fields: [goalId], references: [id])
+  goalId    Int?
+  reminders Reminder[]
+}
+
+model SavingsGoal {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  name          String
+  targetAmount  Float
+  currentAmount Float    @default(0)
+  deadline      DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Account {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  type      String   // bank, savings, checking
+  balance   Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user         User         @relation(fields: [userId], references: [id])
+  transactions Transaction[]
+  deposits     Deposit[]
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  accountId   Int?
+  categoryId  Int?
+  amount      Float
+  date        DateTime
+  type        String   // income, expense, transfer
+  recurring   Boolean  @default(false)
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user      User      @relation(fields: [userId], references: [id])
+  account   Account?  @relation(fields: [accountId], references: [id])
+  category  Category? @relation(fields: [categoryId], references: [id])
+}
+
+model Deposit {
+  id          Int      @id @default(autoincrement())
+  accountId   Int
+  amount      Float
+  date        DateTime
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  account Account @relation(fields: [accountId], references: [id])
+}
+
+model Investment {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  name          String
+  type          String   // stock, fund
+  purchaseAmount Float
+  currentValue  Float
+  purchaseDate  DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Debt {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  creditor     String
+  amount       Float
+  interestRate Float?
+  dueDate      DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id])
+  payments Payment[]
+}
+
+model Payment {
+  id        Int      @id @default(autoincrement())
+  debtId    Int
+  amount    Float
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  debt Debt @relation(fields: [debtId], references: [id])
+}
+
+model Subscription {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  name        String
+  amount      Float
+  frequency   String   // monthly, yearly
+  nextDueDate DateTime
+  categoryId  Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user      User      @relation(fields: [userId], references: [id])
+  category  Category? @relation(fields: [categoryId], references: [id])
+  reminders Reminder[]
+}
+
+model Goal {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  name        String
+  description String?
+  targetDate  DateTime?
+  progress    Float    @default(0)
+  type        String?  // financial, personal
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id])
+  tasks Task[]
+}
+
+model Reminder {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  type        String   // task, budget, subscription
+  message     String
+  triggerTime DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user         User         @relation(fields: [userId], references: [id])
+  task         Task?        @relation(fields: [taskId], references: [id])
+  taskId       Int?
+  budget       Budget?      @relation(fields: [budgetId], references: [id])
+  budgetId     Int?
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id])
+  subscriptionId Int?
+}
+
+// Future Models
+
+model JournalEntry {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  content   String
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Habit {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  frequency String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User      @relation(fields: [userId], references: [id])
+  habitLogs HabitLog[]
+}
+
+model HabitLog {
+  id        Int      @id @default(autoincrement())
+  habitId   Int
+  date      DateTime
+  completed Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  habit Habit @relation(fields: [habitId], references: [id])
+}
+
+model LearningProgress {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  topic     String
+  progress  Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user             User             @relation(fields: [userId], references: [id])
+  learningSessions LearningSession[]
+}
+
+model LearningSession {
+  id                  Int      @id @default(autoincrement())
+  learningProgressId  Int
+  startTime           DateTime
+  endTime             DateTime
+  notes               String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  learningProgress LearningProgress @relation(fields: [learningProgressId], references: [id])
+}
+
+model VisionBoard {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user        User        @relation(fields: [userId], references: [id])
+  visionItems VisionItem[]
+}
+
+model VisionItem {
+  id            Int      @id @default(autoincrement())
+  visionBoardId Int
+  description   String
+  imageUrl      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  visionBoard VisionBoard @relation(fields: [visionBoardId], references: [id])
+}
+
+model MindMap {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user          User          @relation(fields: [userId], references: [id])
+  mindMapNodes  MindMapNode[]
+}
+
+model MindMapNode {
+  id          Int      @id @default(autoincrement())
+  mindMapId   Int
+  parentNodeId Int?
+  content     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  mindMap     MindMap     @relation(fields: [mindMapId], references: [id])
+  parent      MindMapNode? @relation("MindMapNodeToMindMapNode", fields: [parentNodeId], references: [id])
+  children    MindMapNode[] @relation("MindMapNodeToMindMapNode")
+}
+
+model ExerciseLog {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  date            DateTime
+  type            String
+  durationMinutes Int
+  caloriesBurned  Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model NutritionLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  date      DateTime
+  calories  Float
+  protein   Float
+  carbs     Float
+  fats      Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User      @relation(fields: [userId], references: [id])
+  foodItems FoodItem[]
+}
+
+model FoodItem {
+  id             Int      @id @default(autoincrement())
+  nutritionLogId Int
+  name           String
+  quantity       Float
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  nutritionLog NutritionLog @relation(fields: [nutritionLogId], references: [id])
+}
+
+model SleepLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  date      DateTime
+  startTime DateTime
+  endTime   DateTime
+  quality   Int?     // 1-10
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model WaterIntakeLog {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  date         DateTime
+  amountLiters Float
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model MeditationLog {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  date            DateTime
+  durationMinutes Int
+  type            String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model SymptomLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  date      DateTime
+  symptom   String
+  severity  Int      // 1-10
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Event {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  title     String
+  startTime DateTime
+  endTime   DateTime?
+  location  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Calendar {
+  id        Int      @id @default(autoincrement())
+  userId    Int      // Owner
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Contact {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  name        String
+  email       String?
+  phone       String?
+  birthday    DateTime?
+  preferences String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user             User             @relation(fields: [userId], references: [id])
+  anniversaries    Anniversary[]
+  networkReminders NetworkReminder[]
+}
+
+model Anniversary {
+  id        Int      @id @default(autoincrement())
+  contactId Int
+  type      String   // birthday, anniversary
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  contact Contact @relation(fields: [contactId], references: [id])
+}
+
+model Chore {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  title     String
+  frequency String
+  nextDue   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model ShoppingList {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user          User          @relation(fields: [userId], references: [id])
+  shoppingItems ShoppingItem[]
+}
+
+model ShoppingItem {
+  id             Int      @id @default(autoincrement())
+  shoppingListId Int
+  name           String
+  quantity       Int
+  purchased      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  shoppingList ShoppingList @relation(fields: [shoppingListId], references: [id])
+}
+
+model InventoryItem {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  name       String
+  quantity   Int
+  expiryDate DateTime?
+  categoryId Int?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user               User               @relation(fields: [userId], references: [id])
+  inventoryCategory  InventoryCategory? @relation(fields: [categoryId], references: [id])
+}
+
+model InventoryCategory {
+  id        Int      @id @default(autoincrement())
+  name      String   // pantry, wardrobe
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  inventoryItems InventoryItem[]
+}
+
+model TravelPlan {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  destination String
+  startDate DateTime
+  endDate   DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user             User             @relation(fields: [userId], references: [id])
+  travelItineraries TravelItinerary[]
+}
+
+model TravelItinerary {
+  id           Int      @id @default(autoincrement())
+  travelPlanId Int
+  time         DateTime
+  activity     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  travelPlan TravelPlan @relation(fields: [travelPlanId], references: [id])
+}
+
+model PetCareLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  petId     Int
+  date      DateTime
+  activity  String   // feed, walk
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+  pet  Pet  @relation(fields: [petId], references: [id])
+}
+
+model Pet {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  type      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user        User        @relation(fields: [userId], references: [id])
+  petCareLogs PetCareLog[]
+}
+
+model SmartHomeIntegration {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  deviceName String
+  type      String
+  config    Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model CareerTracker {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  role        String
+  startDate   DateTime
+  achievements Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user             User             @relation(fields: [userId], references: [id])
+  careerMilestones CareerMilestone[]
+}
+
+model CareerMilestone {
+  id               Int      @id @default(autoincrement())
+  careerTrackerId  Int
+  description      String
+  date             DateTime
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  careerTracker CareerTracker @relation(fields: [careerTrackerId], references: [id])
+}
+
+model NetworkReminder {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  contactId   Int
+  message     String
+  triggerTime DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id])
+  contact Contact @relation(fields: [contactId], references: [id])
+}
+
+model CreativeNote {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id])
+  sketches Sketch[]
+}
+
+model Sketch {
+  id              Int      @id @default(autoincrement())
+  creativeNoteId  Int
+  imageUrl        String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  creativeNote CreativeNote @relation(fields: [creativeNoteId], references: [id])
 }
