@@ -1,0 +1,15 @@
+# Node.js
+node_modules/
+.next/
+dist/
+*.log
+
+# Docker/Env
+.env
+.dockerignore
+
+# Prisma
+prisma/dev.db  # If using SQLite for dev
+
+# Misc
+*.DS_Store
