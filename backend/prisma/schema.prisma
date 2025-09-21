@@ -1,5 +1,4 @@
 
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -10,7 +9,7 @@ generator client {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   email     String   @unique
   name      String?
   password  String
@@ -55,8 +54,8 @@ model User {
 }
 
 model Category {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   name      String
   type      String?  // income, expense, budget
   createdAt DateTime @default(now())
@@ -69,9 +68,9 @@ model Category {
 }
 
 model Budget {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  categoryId Int
+  id        String   @id @default(uuid())
+  userId    String
+  categoryId String
   amount    Float
   period    String   // monthly, yearly
   startDate DateTime
@@ -85,8 +84,8 @@ model Budget {
 }
 
 model Task {
-  id           Int      @id @default(autoincrement())
-  userId       Int
+  id           String   @id @default(uuid())
+  userId       String
   title        String
   description  String?
   priority     Int      // 1-5
@@ -98,13 +97,13 @@ model Task {
 
   user      User     @relation(fields: [userId], references: [id])
   goal      Goal?    @relation(fields: [goalId], references: [id])
-  goalId    Int?
+  goalId    String?
   reminders Reminder[]
 }
 
 model SavingsGoal {
-  id            Int      @id @default(autoincrement())
-  userId        Int
+  id            String   @id @default(uuid())
+  userId        String
   name          String
   targetAmount  Float
   currentAmount Float    @default(0)
@@ -116,8 +115,8 @@ model SavingsGoal {
 }
 
 model Account {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   name      String
   type      String   // bank, savings, checking
   balance   Float    @default(0)
@@ -130,10 +129,10 @@ model Account {
 }
 
 model Transaction {
-  id          Int      @id @default(autoincrement())
-  userId      Int
-  accountId   Int?
-  categoryId  Int?
+  id          String   @id @default(uuid())
+  userId      String
+  accountId   String?
+  categoryId  String?
   amount      Float
   date        DateTime
   type        String   // income, expense, transfer
@@ -148,8 +147,8 @@ model Transaction {
 }
 
 model Deposit {
-  id          Int      @id @default(autoincrement())
-  accountId   Int
+  id          String   @id @default(uuid())
+  accountId   String
   amount      Float
   date        DateTime
   description String?
@@ -160,8 +159,8 @@ model Deposit {
 }
 
 model Investment {
-  id            Int      @id @default(autoincrement())
-  userId        Int
+  id            String   @id @default(uuid())
+  userId        String
   name          String
   type          String   // stock, fund
   purchaseAmount Float
@@ -174,8 +173,8 @@ model Investment {
 }
 
 model Debt {
-  id           Int      @id @default(autoincrement())
-  userId       Int
+  id           String   @id @default(uuid())
+  userId       String
   creditor     String
   amount       Float
   interestRate Float?
@@ -188,8 +187,8 @@ model Debt {
 }
 
 model Payment {
-  id        Int      @id @default(autoincrement())
-  debtId    Int
+  id        String   @id @default(uuid())
+  debtId    String
   amount    Float
   date      DateTime
   createdAt DateTime @default(now())
@@ -199,13 +198,13 @@ model Payment {
 }
 
 model Subscription {
-  id          Int      @id @default(autoincrement())
-  userId      Int
+  id          String   @id @default(uuid())
+  userId      String
   name        String
   amount      Float
   frequency   String   // monthly, yearly
   nextDueDate DateTime
-  categoryId  Int?
+  categoryId  String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -215,8 +214,8 @@ model Subscription {
 }
 
 model Goal {
-  id          Int      @id @default(autoincrement())
-  userId      Int
+  id          String   @id @default(uuid())
+  userId      String
   name        String
   description String?
   targetDate  DateTime?
@@ -230,8 +229,8 @@ model Goal {
 }
 
 model Reminder {
-  id          Int      @id @default(autoincrement())
-  userId      Int
+  id          String   @id @default(uuid())
+  userId      String
   type        String   // task, budget, subscription
   message     String
   triggerTime DateTime
@@ -240,18 +239,18 @@ model Reminder {
 
   user         User         @relation(fields: [userId], references: [id])
   task         Task?        @relation(fields: [taskId], references: [id])
-  taskId       Int?
+  taskId       String?
   budget       Budget?      @relation(fields: [budgetId], references: [id])
-  budgetId     Int?
+  budgetId     String?
   subscription Subscription? @relation(fields: [subscriptionId], references: [id])
-  subscriptionId Int?
+  subscriptionId String?
 }
 
 // Future Models
 
 model JournalEntry {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   content   String
   date      DateTime
   createdAt DateTime @default(now())
@@ -261,8 +260,8 @@ model JournalEntry {
 }
 
 model Habit {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   name      String
   frequency String
   createdAt DateTime @default(now())
@@ -273,8 +272,8 @@ model Habit {
 }
 
 model HabitLog {
-  id        Int      @id @default(autoincrement())
-  habitId   Int
+  id        String   @id @default(uuid())
+  habitId   String
   date      DateTime
   completed Boolean
   createdAt DateTime @default(now())
@@ -284,8 +283,8 @@ model HabitLog {
 }
 
 model LearningProgress {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   topic     String
   progress  Float
   createdAt DateTime @default(now())
@@ -296,8 +295,8 @@ model LearningProgress {
 }
 
 model LearningSession {
-  id                  Int      @id @default(autoincrement())
-  learningProgressId  Int
+  id                  String   @id @default(uuid())
+  learningProgressId  String
   startTime           DateTime
   endTime             DateTime
   notes               String?
@@ -308,8 +307,8 @@ model LearningSession {
 }
 
 model VisionBoard {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   title     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -319,8 +318,8 @@ model VisionBoard {
 }
 
 model VisionItem {
-  id            Int      @id @default(autoincrement())
-  visionBoardId Int
+  id            String   @id @default(uuid())
+  visionBoardId String
   description   String
   imageUrl      String?
   createdAt     DateTime @default(now())
@@ -330,8 +329,8 @@ model VisionItem {
 }
 
 model MindMap {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   title     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -341,9 +340,9 @@ model MindMap {
 }
 
 model MindMapNode {
-  id          Int      @id @default(autoincrement())
-  mindMapId   Int
-  parentNodeId Int?
+  id          String   @id @default(uuid())
+  mindMapId   String
+  parentNodeId String?
   content     String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -354,8 +353,8 @@ model MindMapNode {
 }
 
 model ExerciseLog {
-  id              Int      @id @default(autoincrement())
-  userId          Int
+  id              String   @id @default(uuid())
+  userId          String
   date            DateTime
   type            String
   durationMinutes Int
@@ -367,8 +366,8 @@ model ExerciseLog {
 }
 
 model NutritionLog {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   date      DateTime
   calories  Float
   protein   Float
@@ -382,8 +381,8 @@ model NutritionLog {
 }
 
 model FoodItem {
-  id             Int      @id @default(autoincrement())
-  nutritionLogId Int
+  id             String   @id @default(uuid())
+  nutritionLogId String
   name           String
   quantity       Float
   createdAt      DateTime @default(now())
@@ -393,8 +392,8 @@ model FoodItem {
 }
 
 model SleepLog {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   date      DateTime
   startTime DateTime
   endTime   DateTime
@@ -406,8 +405,8 @@ model SleepLog {
 }
 
 model WaterIntakeLog {
-  id           Int      @id @default(autoincrement())
-  userId       Int
+  id           String   @id @default(uuid())
+  userId       String
   date         DateTime
   amountLiters Float
   createdAt    DateTime @default(now())
@@ -417,8 +416,8 @@ model WaterIntakeLog {
 }
 
 model MeditationLog {
-  id              Int      @id @default(autoincrement())
-  userId          Int
+  id              String   @id @default(uuid())
+  userId          String
   date            DateTime
   durationMinutes Int
   type            String?
@@ -429,8 +428,8 @@ model MeditationLog {
 }
 
 model SymptomLog {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   date      DateTime
   symptom   String
   severity  Int      // 1-10
@@ -442,8 +441,8 @@ model SymptomLog {
 }
 
 model Event {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   title     String
   startTime DateTime
   endTime   DateTime?
@@ -455,8 +454,8 @@ model Event {
 }
 
 model Calendar {
-  id        Int      @id @default(autoincrement())
-  userId    Int      // Owner
+  id        String   @id @default(uuid())
+  userId    String      // Owner
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -465,8 +464,8 @@ model Calendar {
 }
 
 model Contact {
-  id          Int      @id @default(autoincrement())
-  userId      Int
+  id          String   @id @default(uuid())
+  userId      String
   name        String
   email       String?
   phone       String?
@@ -481,8 +480,8 @@ model Contact {
 }
 
 model Anniversary {
-  id        Int      @id @default(autoincrement())
-  contactId Int
+  id        String   @id @default(uuid())
+  contactId String
   type      String   // birthday, anniversary
   date      DateTime
   createdAt DateTime @default(now())
@@ -492,8 +491,8 @@ model Anniversary {
 }
 
 model Chore {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   title     String
   frequency String
   nextDue   DateTime
@@ -504,8 +503,8 @@ model Chore {
 }
 
 model ShoppingList {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -515,8 +514,8 @@ model ShoppingList {
 }
 
 model ShoppingItem {
-  id             Int      @id @default(autoincrement())
-  shoppingListId Int
+  id             String   @id @default(uuid())
+  shoppingListId String
   name           String
   quantity       Int
   purchased      Boolean  @default(false)
@@ -527,12 +526,12 @@ model ShoppingItem {
 }
 
 model InventoryItem {
-  id         Int      @id @default(autoincrement())
-  userId     Int
+  id         String   @id @default(uuid())
+  userId     String
   name       String
   quantity   Int
   expiryDate DateTime?
-  categoryId Int?
+  categoryId String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -541,7 +540,7 @@ model InventoryItem {
 }
 
 model InventoryCategory {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   name      String   // pantry, wardrobe
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -550,8 +549,8 @@ model InventoryCategory {
 }
 
 model TravelPlan {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   destination String
   startDate DateTime
   endDate   DateTime?
@@ -563,8 +562,8 @@ model TravelPlan {
 }
 
 model TravelItinerary {
-  id           Int      @id @default(autoincrement())
-  travelPlanId Int
+  id           String   @id @default(uuid())
+  travelPlanId String
   time         DateTime
   activity     String
   createdAt    DateTime @default(now())
@@ -574,9 +573,9 @@ model TravelItinerary {
 }
 
 model PetCareLog {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  petId     Int
+  id        String   @id @default(uuid())
+  userId    String
+  petId     String
   date      DateTime
   activity  String   // feed, walk
   createdAt DateTime @default(now())
@@ -587,8 +586,8 @@ model PetCareLog {
 }
 
 model Pet {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   name      String
   type      String
   createdAt DateTime @default(now())
@@ -599,8 +598,8 @@ model Pet {
 }
 
 model SmartHomeIntegration {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   deviceName String
   type      String
   config    Json?
@@ -611,8 +610,8 @@ model SmartHomeIntegration {
 }
 
 model CareerTracker {
-  id          Int      @id @default(autoincrement())
-  userId      Int
+  id          String   @id @default(uuid())
+  userId      String
   role        String
   startDate   DateTime
   achievements Json?
@@ -624,8 +623,8 @@ model CareerTracker {
 }
 
 model CareerMilestone {
-  id               Int      @id @default(autoincrement())
-  careerTrackerId  Int
+  id               String   @id @default(uuid())
+  careerTrackerId  String
   description      String
   date             DateTime
   createdAt        DateTime @default(now())
@@ -635,9 +634,9 @@ model CareerMilestone {
 }
 
 model NetworkReminder {
-  id          Int      @id @default(autoincrement())
-  userId      Int
-  contactId   Int
+  id          String   @id @default(uuid())
+  userId      String
+  contactId   String
   message     String
   triggerTime DateTime
   createdAt   DateTime @default(now())
@@ -648,8 +647,8 @@ model NetworkReminder {
 }
 
 model CreativeNote {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -659,8 +658,8 @@ model CreativeNote {
 }
 
 model Sketch {
-  id              Int      @id @default(autoincrement())
-  creativeNoteId  Int
+  id              String   @id @default(uuid())
+  creativeNoteId  String
   imageUrl        String
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
