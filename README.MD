@@ -1,6 +1,6 @@
 # Harmonify: Your Open-Source Holistic Life Management Platform
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![Node.js Version](https://img.shields.io/badge/Node.js-22%2B-blue.svg)](https://nodejs.org/)
 [![NestJS Version](https://img.shields.io/badge/NestJS-10%2B-red.svg)](https://nestjs.com/)
 [![Next.js Version](https://img.shields.io/badge/Next.js-14%2B-black.svg)](https://nextjs.org/)
@@ -78,7 +78,7 @@ We welcome contributions! Whether it's bug fixes, new modules, or UI improvement
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
-GPLv3 License.
+Harmonify is released under the [GNU Affero General Public License v3.0](LICENSE). If you operate a modified version over a network, you must make the corresponding source available to users as described in Section 13 of the AGPL.
 
 ## Roadmap
 - MVP Release: Core finance/productivity features.

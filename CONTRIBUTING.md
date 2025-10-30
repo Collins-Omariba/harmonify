@@ -1,6 +1,6 @@
 # Contributing to Harmonify
 
-Thank you for your interest in contributing to Harmonify! We welcome contributions from the community to help build a comprehensive life management platform.
+Thank you for your interest in contributing to Harmonify! We welcome contributions from the community to help build a comprehensive life management platform. By participating, you agree that your contributions will be licensed under the GNU Affero General Public License v3.0, the license that governs this project.
 
 ## Ways to Contribute
 

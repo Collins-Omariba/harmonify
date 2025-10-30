@@ -95,4 +95,4 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Harmonify's backend is distributed under the [GNU Affero General Public License v3.0](../LICENSE). Portions of the NestJS framework remain available under their original [MIT license](https://github.com/nestjs/nest/blob/master/LICENSE).
