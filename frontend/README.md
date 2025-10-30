@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Harmonify Frontend
 
-## Getting Started
+The Harmonify frontend is a Next.js App Router application styled with Tailwind CSS. It provides the dashboard, onboarding, and upcoming premium experiences that will connect to Harmonify Cloud.
 
-First, run the development server:
+## Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 22+
+- npm 10+
+- Backend API running locally (via Docker Compose or `npm run start:dev` in `backend/`)
+
+## Installation
+
+```powershell
+cd frontend
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Frontend configuration is read from the root `.env`. Ensure the following variables exist:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+NEXT_PUBLIC_API_BASE_URL="http://localhost:8080"
+```
 
-## Learn More
+Add additional public variables as new modules require them. Avoid placing secrets in `NEXT_PUBLIC_*` variables.
 
-To learn more about Next.js, take a look at the following resources:
+## Development Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```powershell
+# start the development server with Turbopack
+npm run dev
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# run lint checks
+npm run lint
 
-## Deploy on Vercel
+# production build
+npm run build
+npm start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Visit http://localhost:3000 to view the app.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+```
+app/
+	layout.tsx        Root layout
+	page.tsx          Landing experience
+	dashboard/        Authenticated dashboard shell
+	login/            Authentication flows
+	register/         Registration flow
+components/
+	LoginForm.tsx     Auth forms using React Hook Form + Zod
+	RegisterForm.tsx  Registration form and validation
+public/             Static assets
+```
+
+Shared UI, hooks, and utility modules should live under `components/` or a soon-to-be-created `lib/` directory. Keep modules self-contained to support white-labelling and premium offerings.
+
+## Testing
+
+Frontend tests are currently limited; contributions adding Jest + Testing Library coverage are welcome. When adding new components, include tests and run them locally before opening a pull request.
+
+## Deployment Notes
+
+- Self-hosted instances can deploy the frontend via Docker Compose (`frontend` service) or any static hosting provider that supports Next.js serverless functions.
+- Harmonify Cloud uses the same codebase with additional environment values for managed sync features; keep conditional logic feature-flagged and open-source friendly.
+
+## License
+
+This frontend is licensed under the [GNU Affero General Public License v3.0](../LICENSE). If you host a modified build for others to use, you must provide access to the corresponding source code.
