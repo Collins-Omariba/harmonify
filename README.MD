@@ -6,7 +6,7 @@
 [![Next.js Version](https://img.shields.io/badge/Next.js-14%2B-black.svg)](https://nextjs.org/)
 ## Vision
 
-Harmonify is an open-source, holistic life management platform designed to empower individuals to manage every aspect of their lives in one unified app. Inspired by tools like Money Manager EX for finance and comprehensive life trackers, Harmonify will start with core features for manual data entry and grow into a holistic life management platform.
+Harmonify is an open-source, holistic life management platform designed to empower individuals to manage every aspect of their lives in one unified app. Inspired by the need to have a comprehensive life tracker that you host and use without sharing your data, Harmonify will start with core features for manual data entry and grow into a holistic life management platform.
 
 > **📢 Important Note:** In the future, this project will transition to its own dedicated organization (e.g., HarmonifyOrg) for better community governance and scalability.
 
