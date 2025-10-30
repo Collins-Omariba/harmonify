@@ -13,3 +13,4 @@ prisma/dev.db  # If using SQLite for dev
 
 # Misc
 *.DS_Store
+.prettierrc
