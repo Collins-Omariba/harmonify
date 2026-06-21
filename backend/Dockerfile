@@ -1,8 +1,14 @@
-FROM node:22-alpine
+FROM rust:1.80 as builder
+
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npx prisma generate
-EXPOSE 8080
-CMD ["npm", "run", "start:dev"]
+
+# Install necessary build tools and libraries
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# For development via docker-compose, we just run the app using `cargo run`.
+# The docker-compose mounts the local folder into `/app`.
+
+CMD ["cargo", "run"]
