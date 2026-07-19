@@ -54,52 +54,78 @@ All features emphasize user privacy—data stays local or self-hosted. No extern
 - **Deployment**: Docker Compose.
 - **Why This Stack?** Scalable, open-source, and community-friendly. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-## Getting Started
+# Getting Started
 
-### Prerequisites
-- Node.js 22+, Docker Desktop, Git.
+## Prerequisites
 
-### Installation
-1. **Clone the repository**
-   ```powershell
-   git clone https://github.com/Collins-Omariba/harmonify.git
-   cd harmonify
-   ```
-2. **Configure environment variables**
-   ```powershell
-   copy .env.example .env
-   ```
-   Update `DATABASE_URL` and any secrets (JWT, encryption keys, etc.) as needed. Docker Compose supplies a PostgreSQL instance by default.
-3. **Start the stack**
-   ```powershell
-   docker-compose up --build
-   ```
-   - Frontend: http://localhost:3000
-   - Backend: http://localhost:8080/api/ping
-4. **Apply database migrations**
-   ```powershell
-   docker-compose exec backend npx prisma migrate dev --name init
-   ```
+Before you begin, ensure you have the following installed:
 
-### Local-only development
+* Node.js 20+
+* npm
+* Rust (stable toolchain)
+* Cargo
+* PostgreSQL
 
-Prefer to run services directly?
+## Clone the Repository
 
-```powershell
-# install dependencies
-cd backend
+```bash
+git clone https://github.com/Collins-Omariba/harmonify.git
+cd harmonify
+```
+
+## Install Dependencies
+
+From the project root, install all workspace dependencies:
+
+```bash
 npm install
-cd ..\frontend
-npm install
+```
 
-# start apps
-cd ..\backend
-npm run start:dev
-cd ..\frontend
+## Configure the Backend
+
+Create a `.env` file inside the `backend` directory.
+
+```text
+backend/.env
+```
+
+Add the required environment variables:
+
+```env
+DATABASE_URL=postgres://username:password@localhost:5432/harmonify
+JWT_SECRET=your-secret-key
+```
+
+Update the values to match your PostgreSQL configuration.
+
+## Set Up the Database
+
+Create a PostgreSQL database for Harmonify, then run the SQL migration files located in:
+
+```text
+backend/migrations/
+```
+
+## Start the Development Servers
+
+From the project root, run:
+
+```bash
 npm run dev
 ```
 
-Make sure PostgreSQL is available locally and that `DATABASE_URL` points to it.
+This starts both the Rust backend and the Next.js frontend using the Turborepo workspace.
+
+## Available Commands
+
+| Command         | Description                                        |
+| --------------- | -------------------------------------------------- |
+| `npm install`   | Install dependencies for all workspaces            |
+| `npm run dev`   | Start the frontend and backend in development mode |
+| `npm run build` | Build all workspaces                               |
+| `npm run lint`  | Run linting across the project                     |
+
+
 
 ## Contributing
 We welcome contributions! Whether it's bug fixes, new modules, or UX improvements:
