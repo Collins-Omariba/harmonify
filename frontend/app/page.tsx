@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { api } from '@/lib/api';
 
 export default function Home() {
   const [msg, setMsg] = useState('');
@@ -12,9 +13,9 @@ export default function Home() {
     setIsLoggedIn(!!token);
 
     // Test backend connection
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/`)
+    api.get('/')
       .then(() => setMsg('Backend connected successfully'))
-      .catch(() => setMsg('Backend connection failed'));
+      .catch(() => setMsg('Backend connection failed. I am unreliable. Please check your backend server.'));
   }, []);
 
   return (

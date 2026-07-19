@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { api } from '@/lib/api';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -36,11 +36,11 @@ export default function LoginForm({ onSuccess }: LoginProps) {
     setError('');
     
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, data);
+      const response = await api.post<{ access_token: string; user: { id: string; email: string; name?: string } }>('/auth/login', data);
       
       // Store token in localStorage
-      localStorage.setItem('token', response.data.access_token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      localStorage.setItem('token', response.access_token);
+      localStorage.setItem('user', JSON.stringify(response.user));
       
       // Redirect to dashboard
       router.push('/dashboard');
@@ -49,7 +49,7 @@ export default function LoginForm({ onSuccess }: LoginProps) {
         onSuccess();
       }
     } catch (err) {
-      setError(axios.isAxiosError(err) ? err.response?.data?.message : 'Login failed');
+      setError(err instanceof Error ? err.message : 'Login failed');
     } finally {
       setIsLoading(false);
     }

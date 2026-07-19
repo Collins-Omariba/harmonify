@@ -1,9 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { api } from '@/lib/api';
 
 interface User {
-  id: number;
+  id: string;
   email: string;
   name?: string;
 }
@@ -22,25 +23,15 @@ export default function Dashboard() {
     }
 
     // Fetch user profile
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/profile`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-    .then(res => {
-      if (!res.ok) {
-        throw new Error('Failed to fetch profile');
-      }
-      return res.json();
-    })
-    .then(userData => {
-      setUser(userData);
-      setLoading(false);
-    })
-    .catch(() => {
-      localStorage.removeItem('token');
-      router.push('/login');
-    });
+    api.get<User>('/auth/profile')
+      .then(userData => {
+        setUser(userData);
+        setLoading(false);
+      })
+      .catch(() => {
+        localStorage.removeItem('token');
+        router.push('/login');
+      });
   }, [router]);
 
   const handleLogout = () => {
