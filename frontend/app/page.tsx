@@ -12,7 +12,7 @@ export default function Home() {
     setIsLoggedIn(!!token);
 
     // Test backend connection
-    fetch('http://localhost:3001/')
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/`)
       .then(() => setMsg('Backend connected successfully'))
       .catch(() => setMsg('Backend connection failed'));
   }, []);

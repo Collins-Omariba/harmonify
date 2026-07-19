@@ -36,7 +36,7 @@ export default function LoginForm({ onSuccess }: LoginProps) {
     setError('');
     
     try {
-      const response = await axios.post('http://localhost:3001/auth/login', data);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, data);
       
       // Store token in localStorage
       localStorage.setItem('token', response.data.access_token);
@@ -48,8 +48,8 @@ export default function LoginForm({ onSuccess }: LoginProps) {
       if (onSuccess) {
         onSuccess();
       }
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed');
+    } catch (err) {
+      setError(axios.isAxiosError(err) ? err.response?.data?.message : 'Login failed');
     } finally {
       setIsLoading(false);
     }
@@ -109,7 +109,7 @@ export default function LoginForm({ onSuccess }: LoginProps) {
       
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-600">
-          Don't have an account?{' '}
+          {"Don't have an account? "}
           <button 
             onClick={() => router.push('/register')}
             className="font-medium text-blue-600 hover:text-blue-500"

@@ -37,7 +37,7 @@ export default function RegisterForm({ onSuccess }: RegisterProps) {
     setError('');
     
     try {
-      const response = await axios.post('http://localhost:3001/auth/register', data);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`, data);
       
       // Store token in localStorage
       localStorage.setItem('token', response.data.access_token);
@@ -49,8 +49,8 @@ export default function RegisterForm({ onSuccess }: RegisterProps) {
       if (onSuccess) {
         onSuccess();
       }
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Registration failed');
+    } catch (err) {
+      setError(axios.isAxiosError(err) ? err.response?.data?.message : 'Registration failed');
     } finally {
       setIsLoading(false);
     }

@@ -22,7 +22,7 @@ export default function Dashboard() {
     }
 
     // Fetch user profile
-    fetch('http://localhost:3001/auth/profile', {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/profile`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -84,7 +84,7 @@ export default function Dashboard() {
               </h2>
               <p className="text-gray-600 mb-8">
                 This is where your productivity and wellness journey begins. 
-                We'll be adding features here soon!
+                {"We'll be adding features here soon!"}
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
