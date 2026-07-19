@@ -38,6 +38,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cors = CorsLayer::permissive();
 
     let app = Router::new()
+        .route("/", get(|| async { "OK" }))
         .route("/auth/register", post(controllers::auth::register))
         .route("/auth/login", post(controllers::auth::login))
         .route("/auth/profile", get(controllers::auth::get_profile))
