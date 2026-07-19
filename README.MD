@@ -1,9 +1,11 @@
 # Harmonify: Your Open-Source Holistic Life Management Platform
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-[![Node.js Version](https://img.shields.io/badge/Node.js-22%2B-blue.svg)](https://nodejs.org/)
-[![NestJS Version](https://img.shields.io/badge/NestJS-10%2B-red.svg)](https://nestjs.com/)
-[![Next.js Version](https://img.shields.io/badge/Next.js-14%2B-black.svg)](https://nextjs.org/)
+[![Backend](https://img.shields.io/badge/Backend-Rust-orange.svg)](#tech-stack)
+[![Frontend](https://img.shields.io/badge/Frontend-Next.js-black.svg)](https://nextjs.org/)
+[![Database](https://img.shields.io/badge/Database-PostgreSQL-blue.svg)](https://www.postgresql.org/)
+[![Deployment](https://img.shields.io/badge/Deployment-Docker%20Compose-2496ED.svg)](https://www.docker.com/)
+
 ## Vision
 
 Harmonify is an open-source, holistic life management platform designed to empower individuals to manage every aspect of their lives in one unified app. Inspired by the need to have a comprehensive life tracker that you can self-host without sharing your data, Harmonify starts with core features for manual data entry and grows into a holistic life management experience.
@@ -48,83 +50,40 @@ These will be added as modules:
 All features emphasize user privacy—data stays local or self-hosted. No external APIs for finance initially; everything is manual entry like classic money manager apps.
 
 ## Tech Stack
-- **Backend**: NestJS (structured APIs) with Prisma ORM.
+- **Backend**: NestJS (currently) → Rust (migration in progress).
 - **Database**: PostgreSQL.
 - **Frontend**: Next.js.
 - **Deployment**: Docker Compose.
 - **Why This Stack?** Scalable, open-source, and community-friendly. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-# Getting Started
 
-## Prerequisites
+## Quick Start
 
-Before you begin, ensure you have the following installed:
 
-* Node.js 20+
-* npm
-* Rust (stable toolchain)
-* Cargo
-* PostgreSQL
+> **⚠️ Development Status**
+>
+> Harmonify is currently under active development. The backend is being migrated from NestJS to Rust.
 
-## Clone the Repository
+### Prerequisites
+
+- Docker
+- Docker Compose
+
+### Setup
 
 ```bash
-git clone https://github.com/Collins-Omariba/harmonify.git
+git clone https://github.com/yourusername/harmonify.git
 cd harmonify
+
+cp .env.example .env
+
+docker compose up --build
 ```
 
-## Install Dependencies
+The application will be available at:
 
-From the project root, install all workspace dependencies:
-
-```bash
-npm install
-```
-
-## Configure the Backend
-
-Create a `.env` file inside the `backend` directory.
-
-```text
-backend/.env
-```
-
-Add the required environment variables:
-
-```env
-DATABASE_URL=postgres://username:password@localhost:5432/harmonify
-JWT_SECRET=your-secret-key
-```
-
-Update the values to match your PostgreSQL configuration.
-
-## Set Up the Database
-
-Create a PostgreSQL database for Harmonify, then run the SQL migration files located in:
-
-```text
-backend/migrations/
-```
-
-## Start the Development Servers
-
-From the project root, run:
-
-```bash
-npm run dev
-```
-
-This starts both the Rust backend and the Next.js frontend using the Turborepo workspace.
-
-## Available Commands
-
-| Command         | Description                                        |
-| --------------- | -------------------------------------------------- |
-| `npm install`   | Install dependencies for all workspaces            |
-| `npm run dev`   | Start the frontend and backend in development mode |
-| `npm run build` | Build all workspaces                               |
-| `npm run lint`  | Run linting across the project                     |
-
+- Frontend: http://localhost:3000
+- Backend: http://localhost:8080
 
 
 ## Contributing
